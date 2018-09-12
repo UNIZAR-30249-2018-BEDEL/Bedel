@@ -79,57 +79,45 @@ bedelApp.controller('mapController', ['$scope', function mapController($scope) {
         view: new ol.View({
             projection: ol.proj.get('EPSG:25830'),
             center: [675937, 4616796],
-            zoom: 17,
-            minZoom: 17,
+            zoom: 18,
+            minZoom: 18,
             maxZoom: 20,
-            extent: [675593, 4616898, 676298, 4616695]
+            extent: [675880, 4616998, 676000, 4616750]
         })
     });
-    var layerSwitcher = new ol.control.LayerSwitcher({
+    map.addControl(new ol.control.LayerSwitcher({
         tipLabel: 'Visualización de plantas'
+    }));
+
+    // Popup showing the position the user clicked
+    var popup = new ol.Overlay({
+        element: document.getElementById('popup'),
+        autoPan: true
     });
-    map.addControl(layerSwitcher);
-    /*var crs = new L.Proj.CRS("EPSG:25830","+proj=utm +zone=30 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs", {
-            resolutions: [53.125201382285255, 26.562600691142627, 14.062553307075499, 6.718775468936064,
-                3.7500142152201517, 1.7187565153092277, 0.9375035538050343, 0.5000018953626857,
-                0.26375099980381617, 0.131875499901908]
-            //Origen de servicio tileado
-            //origin:[4590500.0, 651500.0]
-        });
-    var map = new L.Map('map', {
-        crs: crs,
-        //center: [4616796, 675937],
-        center: [0, 0],
-        zoom: 0,
-        minZoom: 0,
-        maxZoom: 9,
-        //maxBounds: [[4616898, 675593],[4616695, 676298]]
-    });
-    var baseMaps = {
-        P4: L.tileLayer.wms('http://localhost:8080/geoserver/wms/bedel?', {
-            layers: 'ada_4'
-        }),
-        P3: L.tileLayer.wms('http://localhost:8080/geoserver/wms/bedel?', {
-            layers: 'ada_3,betan_3,torres_3'
-        }),
-        P2: L.tileLayer.wms('http://localhost:8080/geoserver/wms/bedel?', {
-            layers: 'ada_2,betan_2,torres_2'
-        }),
-        P1: L.tileLayer.wms('http://localhost:8080/geoserver/wms/bedel?', {
-            layers: 'ada_1,betan_1,torres_1'
-        }),
-        P0: L.tileLayer.wms('http://localhost:8080/geoserver/wms/bedel?', {
-            layers: 'ada_0,betan_0,torres_0'
-        }),
-        S1: L.tileLayer.wms('http://localhost:8080/geoserver/wms/bedel?', {
-            layers: 'ada_s1,betan_s1,torres_s1'
-        }),
+    map.addOverlay(popup);
+
+    document.getElementById('popup-closer').onclick = function() {
+        popup.setPosition(undefined);
+        document.getElementById('popup-closer').blur();
+
+        return false;
     }
 
-    L.control.layers(baseMaps).addTo(map);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    baseMaps.P0.addTo(map);*/
+    var espacio = {};
+
+    map.on('singleclick', function(evt) {
+        var coordinate = evt.coordinate;
+        espacio.nombre = "espacio";
+
+        document.getElementById('popup-content').innerHTML = '<p><b>Nombre: </b>' + espacio.nombre + '</p>' +
+            '<button ng-click="crearIncidencia()" class="btn btn-success">Crear incidencia</button>';
+        popup.setPosition(coordinate);
+
+        console.log(coordinate);
+    });
+
+    $scope.crearIncidencia = function() {
+        console.log("crear incidencia");
+    }
 
 }]);

@@ -6,13 +6,20 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply from: 'https://raw.github.com/gretty-gradle-plugin/gretty/master/pluginScripts/gretty.plugin'
 
+sourceCompatibility = 1.8
+
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
+    compile 'com.zaxxer:HikariCP:3.2.0'
+    compile 'net.sf.json-lib:json-lib:2.4:jdk15'
+    compile 'org.postgresql:postgresql:42.2.5'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.+'
+    testCompile 'org.slf4j:slf4j-simple:1.7.25'
 }
 
 gretty {

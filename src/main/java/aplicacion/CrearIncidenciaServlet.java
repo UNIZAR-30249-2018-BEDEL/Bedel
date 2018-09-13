@@ -4,6 +4,7 @@ import dominio.Incidencia;
 import dominio.IncidenciaRepositorio;
 import infraestructura.PoolDeConexiones;
 import infraestructura.ServletCommon;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.sf.json.JSONObject;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class CrearIncidenciaServlet extends HttpServlet {
         Incidencia incidencia;
 
         JSONObject jsonRequest;
-        try (Connection con = PoolDeConexiones.getConnection()){
+        try (Connection con = PoolDeConexiones.getConnection()) {
             con.setAutoCommit(false);
             try {
                 jsonRequest = ServletCommon.readJSON(request.getReader());

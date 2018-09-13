@@ -1,5 +1,8 @@
 package dominio;
 
+import infraestructura.ResultadoQueryInstancia;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -20,9 +23,22 @@ public class Incidencia extends Entidad {
         id = UUID.randomUUID();
     }
 
+    public Incidencia(ResultadoQueryInstancia instancia) throws Exception {
+        asunto = instancia.next();
+        descripcion = instancia.next();
+        fecha = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        fecha.setTime(format.parse(instancia.next()));
+        localizacion = new Localizacion(Double.parseDouble(instancia.next()), Double.parseDouble(instancia.next()),
+                instancia.next());
+        estado = Estado.fromString(instancia.next());
+        id = UUID.fromString(instancia.next());
+    }
+
     public void aceptar() throws Exception {
-        if(estado.getEstado().equals(Estado.CREADO)) {
+        if(estado == Estado.CREADO) {
             estado = Estado.ACEPTADO;
+            fecha = Calendar.getInstance();
         }
         else {
             throw new Exception("Estado de destino incompatible");
@@ -30,8 +46,9 @@ public class Incidencia extends Entidad {
     }
 
     public void cancelar() throws Exception {
-        if(estado.getEstado().equals(Estado.CREADO)) {
+        if(estado == Estado.CREADO) {
             estado = Estado.CANCELADO;
+            fecha = Calendar.getInstance();
         }
         else {
             throw new Exception("Estado de destino incompatible");
@@ -39,8 +56,9 @@ public class Incidencia extends Entidad {
     }
 
     public void completar() throws Exception {
-        if(estado.getEstado().equals(Estado.ACEPTADO)) {
+        if(estado == Estado.ACEPTADO) {
             estado = Estado.COMPLETADO;
+            fecha = Calendar.getInstance();
         }
         else {
             throw new Exception("Estado de destino incompatible");

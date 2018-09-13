@@ -11,6 +11,37 @@ public final class BaseRepositorio {
 
     private BaseRepositorio() {}
 
+
+    public static void creaIncidencia(Connection con, String asunto, String descripcion, Calendar fecha, double longitud,
+                                      double latitud, String planta, String estado, String id) throws Exception {
+        PreparedStatement stmt = con.prepareStatement(
+                "INSERT INTO incidencia " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+        stmt.setString(1, asunto);
+        stmt.setString(2, descripcion);
+        stmt.setDate(3, new java.sql.Date(fecha.getTimeInMillis()));
+        stmt.setDouble(4, longitud);
+        stmt.setDouble(5, latitud);
+        stmt.setString(6, planta);
+        stmt.setString(7, estado);
+        stmt.setString(8, id);
+
+        stmt.executeUpdate();
+    }
+
+    public static void modificaEstadoIncidencia(Connection con, Calendar fecha, String estado,
+                                                String id) throws Exception {
+        PreparedStatement stmt = con.prepareStatement(
+                "UPDATE incidencia " +
+                "SET fecha=?, estado=? " +
+                "WHERE id=?;");
+        stmt.setDate(1, new java.sql.Date(fecha.getTimeInMillis()));
+        stmt.setString(2, estado);
+        stmt.setString(3, id);
+
+        stmt.executeUpdate();
+    }
+
     public static ResultadoQuery buscaEspacioPorCoordenadas(double longitud, double latitud, String planta) {
         try (Connection con = PoolDeConexiones.getConnection()) {
 
@@ -52,21 +83,41 @@ public final class BaseRepositorio {
         return null;
     }
 
-    public static void creaIncidencia(Connection con, String asunto, String descripcion, Calendar fecha, double longitud,
-                                      double latitud, String planta, String estado, String id) throws Exception {
-        PreparedStatement stmt = con.prepareStatement(
-                "INSERT INTO incidencia " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-        stmt.setString(1, asunto);
-        stmt.setString(2, descripcion);
-        stmt.setDate(3, new java.sql.Date(fecha.getTimeInMillis()));
-        stmt.setDouble(4, longitud);
-        stmt.setDouble(5, latitud);
-        stmt.setString(6, planta);
-        stmt.setString(7, estado);
-        stmt.setString(8, id);
+    public static ResultadoQuery buscaIncidenciaPorId(String id) {
+        try (Connection con = PoolDeConexiones.getConnection()) {
 
-        stmt.executeUpdate();
+            PreparedStatement stmt = con.prepareStatement(
+                    "SELECT * FROM incidencia " +
+                    "WHERE id=? " +
+                    "LIMIT 1;");
+            stmt.setString(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+            ResultadoQuery rq;
+            if(rs.next()) {
+                rq = new ResultadoQuery();
+                ArrayList<String> instancia;
+                do {
+                    instancia = new ArrayList<>();
+                    instancia.add(rs.getString("asunto"));
+                    instancia.add(rs.getString("descripcion"));
+                    instancia.add(rs.getDate("fecha").toString());
+                    instancia.add(Double.toString(rs.getDouble("lon")));
+                    instancia.add(Double.toString(rs.getDouble("lat")));
+                    instancia.add(rs.getString("planta"));
+                    instancia.add(rs.getString("estado"));
+                    instancia.add(rs.getString("id"));
+                    rq.append(instancia);
+                } while(rs.next());
+
+                return rq;
+            }
+
+            return null;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

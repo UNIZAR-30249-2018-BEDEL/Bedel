@@ -17,4 +17,13 @@ public enum Estado {
         return estado;
     }
 
+    public static Estado fromString(String text) {
+        for (Estado e : Estado.values()) {
+            if (e.estado.equalsIgnoreCase(text)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
 }

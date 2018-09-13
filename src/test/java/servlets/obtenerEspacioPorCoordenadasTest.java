@@ -12,12 +12,8 @@ import static org.junit.Assert.*;
 import org.mockito.Mockito;
 
 import net.sf.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class obtenerEspacioPorCoordenadasTest extends Mockito {
-
-    final static Logger log = LoggerFactory.getLogger(obtenerEspacioPorCoordenadasTest.class);
 
     @Test
     public void testServletEspacio() throws Exception {

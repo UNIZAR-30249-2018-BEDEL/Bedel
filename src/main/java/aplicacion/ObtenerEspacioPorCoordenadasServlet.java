@@ -14,13 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 import net.sf.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @WebServlet("/obtenerEspacioPorCoordenadas")
 public class ObtenerEspacioPorCoordenadasServlet extends HttpServlet {
-
-    final static Logger log = LoggerFactory.getLogger(ObtenerEspacioPorCoordenadasServlet.class);
 
     private static final long serialVersionUID = 1L;
 

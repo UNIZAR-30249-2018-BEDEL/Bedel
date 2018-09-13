@@ -7,13 +7,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.mockito.Mockito;
 
 import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ObtenerEspacioPorCoordenadasTest extends Mockito {
+
+    private final Logger log = LoggerFactory.getLogger(ObtenerEspacioPorCoordenadasTest.class);
 
     @Test
     public void testServletEspacio() throws Exception {
@@ -35,15 +40,14 @@ public class ObtenerEspacioPorCoordenadasTest extends Mockito {
 
             writer.flush();
 
+            log.info(stringWriter.toString());
             JSONObject JSONResponse = JSONObject.fromObject(stringWriter.toString());
             assertTrue(JSONResponse.getString("id").contains("0f47f99d-8232-4125-a909-0da342f39502"));
             assertTrue(JSONResponse.getString("edificio").contains("Ada Byron"));
             assertTrue(JSONResponse.getString("planta").contains("P0"));
             assertTrue(JSONResponse.getString("horario").contains("Lunes:: 08:00 - 09:00, 16:00 - 18:00; " +
                     "Martes:: ; Jueves:: 09:00 - 11:30; "));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }
@@ -70,9 +74,7 @@ public class ObtenerEspacioPorCoordenadasTest extends Mockito {
 
             JSONObject JSONResponse = JSONObject.fromObject(stringWriter.toString());
             assertTrue(JSONResponse.getString("exterior").contains("true"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }
@@ -97,9 +99,7 @@ public class ObtenerEspacioPorCoordenadasTest extends Mockito {
             writer.flush();
 
             assertTrue(stringWriter.toString().contains("error"));
-        }  catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }

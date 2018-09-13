@@ -23,4 +23,40 @@
         <url-pattern>/obtenerEspacioPorCoordenadas</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ObtenerIncidencias</servlet-name>
+        <servlet-class>aplicacion.ObtenerIncidenciasServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ObtenerIncidencias</servlet-name>
+        <url-pattern>/obtenerIncidencias</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>aplicacion.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CrearIncidencia</servlet-name>
+        <servlet-class>aplicacion.CrearIncidenciaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CrearIncidencia</servlet-name>
+        <url-pattern>/crearIncidencia</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CambiarEstadoIncidencia</servlet-name>
+        <servlet-class>aplicacion.CambiarEstadoIncidenciaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CambiarEstadoIncidencia</servlet-name>
+        <url-pattern>/cambiarEstadoIncidencia</url-pattern>
+    </servlet-mapping>
+
 </web-app>

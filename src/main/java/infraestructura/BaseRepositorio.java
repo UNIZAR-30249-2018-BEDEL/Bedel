@@ -127,9 +127,9 @@ public final class BaseRepositorio {
             if (admin) {
                 stmt = con.prepareStatement(
                         "SELECT * FROM incidencia " +
-                            "WHERE estado=\'creado\' OR estado=\'aceptado\' " +
-                            "OR (estado=\'completado\' AND fecha>=?) " +
-                            "OR (estado=\'cancelado\' AND fecha>=?);");
+                                "WHERE estado=\'creado\' OR estado=\'aceptado\' " +
+                                "OR (estado=\'completado\' AND fecha>=?) " +
+                                "OR (estado=\'cancelado\' AND fecha>=?);");
                 stmt.setDate(1, date);
                 stmt.setDate(2, date);
             }
@@ -169,4 +169,35 @@ public final class BaseRepositorio {
         return null;
     }
 
+    public static ResultadoQuery buscaAdministradorPorCredenciales(String nick, String pass) {
+        try (Connection con = PoolDeConexiones.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement(
+                    "SELECT * FROM administrador " +
+                            "WHERE nick=? AND pass=?" +
+                            "LIMIT 1;");
+            stmt.setString(1, nick);
+            stmt.setString(2, pass);
+
+            ResultSet rs = stmt.executeQuery();
+            ResultadoQuery rq;
+            if(rs.next()) {
+                rq = new ResultadoQuery();
+                ArrayList<String> instancia;
+                do {
+                    instancia = new ArrayList<>();
+                    instancia.add(rs.getString("nick"));
+                    instancia.add(rs.getString("pass"));
+                    instancia.add(rs.getString("id"));
+                    rq.append(instancia);
+                } while(rs.next());
+
+                return rq;
+            }
+
+            return null;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

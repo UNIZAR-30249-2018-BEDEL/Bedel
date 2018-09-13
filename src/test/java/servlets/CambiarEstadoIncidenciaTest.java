@@ -14,7 +14,6 @@ import java.io.*;
 
 import static org.junit.Assert.assertTrue;
 
-@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CambiarEstadoIncidenciaTest extends Mockito {
 
@@ -39,9 +38,7 @@ public class CambiarEstadoIncidenciaTest extends Mockito {
             writer.flush();
 
             assertTrue(stringWriter.toString().contains("Estado de la incidencia modificado"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }
@@ -67,9 +64,7 @@ public class CambiarEstadoIncidenciaTest extends Mockito {
             writer.flush();
 
             assertTrue(stringWriter.toString().contains("error"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }
@@ -95,9 +90,7 @@ public class CambiarEstadoIncidenciaTest extends Mockito {
             writer.flush();
 
             assertTrue(stringWriter.toString().contains("Estado de la incidencia modificado"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }
@@ -123,9 +116,7 @@ public class CambiarEstadoIncidenciaTest extends Mockito {
             writer.flush();
 
             assertTrue(stringWriter.toString().contains("error"));
-        }  catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }

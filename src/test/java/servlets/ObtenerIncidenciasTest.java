@@ -20,7 +20,6 @@ public class ObtenerIncidenciasTest extends Mockito {
 
     Logger log = LoggerFactory.getLogger(ObtenerIncidenciasTest.class);
 
-    @Ignore
     @Test
     public void testServletIncidenciasAdministrador() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -46,9 +45,7 @@ public class ObtenerIncidenciasTest extends Mockito {
             JSONArray JSONResponseArray = JSONObject.fromObject(stringWriter.toString()).getJSONArray("incidencias");
             JSONObject JSONResponse = JSONObject.fromObject(JSONResponseArray.get(0).toString());
             assertTrue(JSONResponse.getString("id").contains("3abe01b4-769a-451e-890d-4979f7e1f838"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }
@@ -74,22 +71,17 @@ public class ObtenerIncidenciasTest extends Mockito {
             JSONArray JSONResponseArray = JSONObject.fromObject(stringWriter.toString()).getJSONArray("incidencias");
             JSONObject JSONResponse = JSONObject.fromObject(JSONResponseArray.get(0).toString());
             assertTrue(JSONResponse.getString("id").contains("5e89367a-8180-489d-816c-b43f0bd0e108"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Ignore
     @Test
     public void testServletFallo() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
 
-        BufferedReader bf = new BufferedReader(new StringReader(
-                "{\"lat\":\"4616758.481090046\"," +
-                    "\"planta\":\"P0\"}"));
+        BufferedReader bf = new BufferedReader(new StringReader(""));
         when(request.getReader()).thenReturn(bf);
 
         StringWriter stringWriter = new StringWriter();
@@ -102,9 +94,7 @@ public class ObtenerIncidenciasTest extends Mockito {
             writer.flush();
 
             assertTrue(stringWriter.toString().contains("error"));
-        }  catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
+        } catch (ServletException|IOException e) {
             e.printStackTrace();
         }
     }

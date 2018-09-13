@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 
 import net.sf.json.JSONObject;
 
-public class obtenerEspacioPorCoordenadasTest extends Mockito {
+public class ObtenerEspacioPorCoordenadasTest extends Mockito {
 
     @Test
     public void testServletEspacio() throws Exception {

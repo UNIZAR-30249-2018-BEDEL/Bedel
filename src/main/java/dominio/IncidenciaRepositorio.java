@@ -4,6 +4,7 @@ import infraestructura.BaseRepositorio;
 import infraestructura.ResultadoQuery;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class IncidenciaRepositorio {
@@ -30,6 +31,31 @@ public class IncidenciaRepositorio {
         else {
             Incidencia incidencia = new Incidencia(rq.next());
             resultado = Optional.of(incidencia);
+        }
+
+        return resultado;
+    }
+
+    public Optional<ArrayList<Incidencia>> obtenIncidencias(Administrador admin) throws Exception {
+        Optional<ArrayList<Incidencia>> resultado;
+        ResultadoQuery rq;
+
+        if (admin != null) {
+            rq = BaseRepositorio.buscaIncidencias(true);
+        }
+        else {
+            rq = BaseRepositorio.buscaIncidencias(false);
+        }
+
+        if (rq == null) {
+            resultado = Optional.empty();
+        }
+        else {
+            ArrayList<Incidencia> incidencias = new ArrayList<>();
+            while (rq.hasNext()) {
+                incidencias.add(new Incidencia(rq.next()));
+            }
+            resultado = Optional.of(incidencias);
         }
 
         return resultado;

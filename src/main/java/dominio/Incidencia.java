@@ -85,4 +85,12 @@ public class Incidencia extends Entidad {
         return estado;
     }
 
+    public String serializar() {
+        return String.format("{ \"asunto\": \"%s\", \"descripcion\": \"%s\", \"fecha\": \"%s\", " +
+                        "\"lon\": \"%f\", \"lat\": \"%f\", \"planta\": \"%s\", \"estado\": \"%s\", " +
+                        "\"id\": \"%s\" } ",
+                asunto, descripcion, fecha.getTime().toString(), localizacion.getLongitud(), localizacion.getLatitud(),
+                localizacion.getPlanta(), estado.getEstado(), id.toString());
+    }
+
 }

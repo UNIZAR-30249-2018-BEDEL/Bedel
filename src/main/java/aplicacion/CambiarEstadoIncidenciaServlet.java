@@ -36,6 +36,7 @@ public class CambiarEstadoIncidenciaServlet extends HttpServlet {
             con.setAutoCommit(false);
             try {
                 jsonRequest = ServletCommon.readJSON(request.getReader());
+                jsonRequest.get("token");
                 incidencia = incidenciaRepo.obtenIncidenciaPorId(jsonRequest.getString("id"));
                 if(incidencia.isPresent()) {
                     if (jsonRequest.getString("nuevoEstado").equals(Estado.ACEPTADO.getEstado())) {
@@ -46,6 +47,9 @@ public class CambiarEstadoIncidenciaServlet extends HttpServlet {
                     }
                     else if (jsonRequest.getString("nuevoEstado").equals(Estado.COMPLETADO.getEstado())) {
                         incidencia.get().completar();
+                    }
+                    else {
+                        throw new Exception("Nuevo estado erroneo");
                     }
                     incidenciaRepo.modificaEstadoIncidencia(con, incidencia.get());
                     con.commit();

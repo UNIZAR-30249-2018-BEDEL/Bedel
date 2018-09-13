@@ -44,7 +44,6 @@ public final class BaseRepositorio {
 
     public static ResultadoQuery buscaEspacioPorCoordenadas(double longitud, double latitud, String planta) {
         try (Connection con = PoolDeConexiones.getConnection()) {
-
             PreparedStatement stmt = con.prepareStatement(
                     "SELECT descripcion, superficie, aforo, tipo, planta, horario, edificio, id " +
                     "FROM espacio " +
@@ -85,12 +84,62 @@ public final class BaseRepositorio {
 
     public static ResultadoQuery buscaIncidenciaPorId(String id) {
         try (Connection con = PoolDeConexiones.getConnection()) {
-
             PreparedStatement stmt = con.prepareStatement(
                     "SELECT * FROM incidencia " +
                     "WHERE id=? " +
                     "LIMIT 1;");
             stmt.setString(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+            ResultadoQuery rq;
+            if(rs.next()) {
+                rq = new ResultadoQuery();
+                ArrayList<String> instancia;
+                do {
+                    instancia = new ArrayList<>();
+                    instancia.add(rs.getString("asunto"));
+                    instancia.add(rs.getString("descripcion"));
+                    instancia.add(rs.getDate("fecha").toString());
+                    instancia.add(Double.toString(rs.getDouble("lon")));
+                    instancia.add(Double.toString(rs.getDouble("lat")));
+                    instancia.add(rs.getString("planta"));
+                    instancia.add(rs.getString("estado"));
+                    instancia.add(rs.getString("id"));
+                    rq.append(instancia);
+                } while(rs.next());
+
+                return rq;
+            }
+
+            return null;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ResultadoQuery buscaIncidencias(boolean admin) {
+        try (Connection con = PoolDeConexiones.getConnection()) {
+            PreparedStatement stmt;
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DAY_OF_MONTH, -7);
+            java.sql.Date date = new java.sql.Date(cal.getTimeInMillis());
+            if (admin) {
+                stmt = con.prepareStatement(
+                        "SELECT * FROM incidencia " +
+                            "WHERE estado=\'creado\' OR estado=\'aceptado\' " +
+                            "OR (estado=\'completado\' AND fecha>=?) " +
+                            "OR (estado=\'cancelado\' AND fecha>=?);");
+                stmt.setDate(1, date);
+                stmt.setDate(2, date);
+            }
+            else {
+                stmt = con.prepareStatement(
+                        "SELECT * FROM incidencia " +
+                                "WHERE estado=\'aceptado\' " +
+                                "OR (estado=\'completado\' AND fecha>=?);");
+                stmt.setDate(1, date);
+            }
 
             ResultSet rs = stmt.executeQuery();
             ResultadoQuery rq;

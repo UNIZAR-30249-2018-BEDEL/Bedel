@@ -17,7 +17,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 
-@WebServlet("/cambiarEstadoIncidenciaServlet")
+@WebServlet("/cambiarEstadoIncidencia")
 public class CambiarEstadoIncidenciaServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
